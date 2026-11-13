@@ -9,7 +9,11 @@ def registrar_usuario(datos, ruta):
     correo = input("Correo electrónico corporativo: ")
     direccion = input("Dirección: ")
     contrasena = input("Contraseña: ")
-    rol = input("Rol (administrativo / medico): ")
+    rol = input("Rol (administrativo/medico): ")
+
+    while rol != "administrativo" and rol != "medico":
+        print("Rol no válido. Escribe administrativo o medico.")
+        rol = input("Rol (administrativo/medico): ")    
     
     nuevo_usuario = {
         "identificacion": identificacion,

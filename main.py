@@ -62,7 +62,7 @@ if acceso_concedido:
                     print("Opción no disponible")
                     
             case "1":
-                registrar_paciente(datos)
+                registrar_paciente(datos, ruta)
             
             case "2":
                 diagnosticar_paciente(datos, usuario)
