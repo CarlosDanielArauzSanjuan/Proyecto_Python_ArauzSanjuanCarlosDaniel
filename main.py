@@ -57,7 +57,7 @@ if acceso_concedido:
         match opcion:
             case "0":
                 if usuario["rol"] == "administrativo":
-                    registrar_usuario(datos)
+                    registrar_usuario(datos, ruta)
                 else: 
                     print("Opción no disponible")
                     
