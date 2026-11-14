@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 
-from modulos.usuarios import registrar_usuario
-from modulos.pacientes import registrar_paciente
+from modulos.usuarios import gestionar_usuarios
+from modulos.pacientes import gestionar_pacientes
 from modulos.diagnosticos import diagnosticar_paciente
 from modulos.historia import consultar_historia
 
@@ -15,7 +15,9 @@ with ruta.open("r", encoding="utf-8") as archivo:
 
 # print(datos["usuarios"][0]["correo"])
 
-print("======= Clínica ACME =======")
+print("\n╔══════════════════════════════════════╗")
+print("║           ACCESO CLÍNICA ACME        ║")
+print("╚══════════════════════════════════════╝")
 correo_ingresado = input("Correo: ")
 contrasena_ingresada = input("Contraseña: ")
 
@@ -45,40 +47,48 @@ if acceso_concedido:
     sesion_activa = True
 
     while sesion_activa:
-        print("1. Registrar pacientes")
-        
+        print("\n╔══════════════════════════════════════╗")
+        print("║             CLÍNICA ACME             ║")
+        print("║            MENÚ PRINCIPAL            ║")
+        print("╠══════════════════════════════════════╣")
+        print("║ Sesión:", usuario["nombres"], usuario["apellidos"])
+        print("╠══════════════════════════════════════╣")
+        print("║ 1. Gestionar pacientes               ║")
+
         if usuario["rol"] == "medico":
-            print("2. Diagnosticar pacientes")
-            
-        print("3. Consultar historia clínica")
-        print("4. Cerrar sesión")
+            print("║ 2. Diagnosticar paciente             ║")
+
+        print("║ 3. Historia clínica                  ║")
+        print("║ 4. Cerrar sesión                     ║")
 
         if usuario["rol"] == "administrativo":
-            print("0. Registrar usuarios")
+            print("║ 0. Gestionar usuarios                ║")
 
-        opcion = input("Elige una opción: ")
+        print("╚══════════════════════════════════════╝")
+        opcion = input("Selecciona una opción: ")
 
         match opcion:
             case "0":
                 if usuario["rol"] == "administrativo":
-                    registrar_usuario(datos, ruta)
+                    gestionar_usuarios(datos, ruta, usuario)
                 else:
-                    print("Opción no disponible")
+                    print("Opción no disponible.")
 
             case "1":
-                registrar_paciente(datos, ruta)
+                gestionar_pacientes(datos, ruta)
 
             case "2":
                 if usuario["rol"] == "medico":
                     diagnosticar_paciente(datos, usuario, ruta)
                 else:
-                    print("Opción no disponible")
+                    print("Opción no disponible.")
 
             case "3":
                 consultar_historia(datos)
 
             case "4":
                 sesion_activa = False
+                print("Sesión cerrada.")
 
             case _:
-                print("Opción inválida")
+                print("Opción inválida.")
