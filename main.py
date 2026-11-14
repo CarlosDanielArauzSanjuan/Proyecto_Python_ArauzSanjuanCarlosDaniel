@@ -7,11 +7,18 @@ from modulos.diagnosticos import diagnosticar_paciente
 from modulos.historia import consultar_historia
 
 
-ruta = Path("datos") / "clinica.json"
+ruta = Path(__file__).parent / "datos" / "clinica.json"
 
 # LECTURA JSON
-with ruta.open("r", encoding="utf-8") as archivo:
-    datos = json.load(archivo)
+try:
+    with ruta.open("r", encoding="utf-8") as archivo:
+        datos = json.load(archivo)
+except FileNotFoundError:
+    print("No se encontró el archivo datos/clinica.json.")
+    raise SystemExit(1)
+except json.JSONDecodeError:
+    print("El archivo datos/clinica.json no contiene JSON válido.")
+    raise SystemExit(1)
 
 # print(datos["usuarios"][0]["correo"])
 
@@ -55,13 +62,13 @@ if acceso_concedido:
         print("╠══════════════════════════════════════╣")
         print("║ 1. Gestionar pacientes               ║")
 
-        if usuario["rol"] == "medico":
+        if "medico" in usuario["roles"]:
             print("║ 2. Diagnosticar paciente             ║")
 
         print("║ 3. Historia clínica                  ║")
         print("║ 4. Cerrar sesión                     ║")
 
-        if usuario["rol"] == "administrativo":
+        if "administrativo" in usuario["roles"]:
             print("║ 0. Gestionar usuarios                ║")
 
         print("╚══════════════════════════════════════╝")
@@ -69,7 +76,7 @@ if acceso_concedido:
 
         match opcion:
             case "0":
-                if usuario["rol"] == "administrativo":
+                if "administrativo" in usuario["roles"]:
                     gestionar_usuarios(datos, ruta, usuario)
                 else:
                     print("Opción no disponible.")
@@ -78,7 +85,7 @@ if acceso_concedido:
                 gestionar_pacientes(datos, ruta)
 
             case "2":
-                if usuario["rol"] == "medico":
+                if "medico" in usuario["roles"]:
                     diagnosticar_paciente(datos, usuario, ruta)
                 else:
                     print("Opción no disponible.")

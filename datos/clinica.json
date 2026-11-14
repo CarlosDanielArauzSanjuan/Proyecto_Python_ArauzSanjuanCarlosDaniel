@@ -8,7 +8,9 @@
       "correo": "admin@acmeclinic.com",
       "direccion": "Cl 185 # 26 – 85",
       "contrasena": "admin123",
-      "rol": "administrativo"
+      "roles": [
+        "administrativo"
+      ]
     }
   ],
   "pacientes": [],
