@@ -25,21 +25,24 @@ except json.JSONDecodeError:
 print("\n╔══════════════════════════════════════╗")
 print("║           ACCESO CLÍNICA ACME        ║")
 print("╚══════════════════════════════════════╝")
-correo_ingresado = input("Correo: ")
-contrasena_ingresada = input("Contraseña: ")
-
 acceso_concedido = False
 
-for usuario in datos["usuarios"]:
-    if usuario["correo"] == correo_ingresado:
-        if usuario["contrasena"] == contrasena_ingresada:
-            acceso_concedido = True
+while acceso_concedido == False:
+    correo_ingresado = input("Correo: ")
+    contrasena_ingresada = input("Contraseña: ")
+    correo_encontrado = False
+
+    for usuario in datos["usuarios"]:
+        if usuario["correo"] == correo_ingresado:
+            correo_encontrado = True
+            if usuario["contrasena"] == contrasena_ingresada:
+                acceso_concedido = True
+            else:
+                print("Contraseña incorrecta. Intenta de nuevo.")
             break
-        else:
-            print("Contraseña incorrecta")
-            break
-else:
-    print("Correo no encontrado")
+
+    if correo_encontrado == False:
+        print("Correo no encontrado. Intenta de nuevo.")
 
 
 # ============================== MENÚ INICIAL ================================

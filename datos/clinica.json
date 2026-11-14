@@ -1,18 +1,48 @@
 {
-  "usuarios": [
-    {
-      "identificacion": "0000",
-      "nombres": "Admin",
-      "apellidos": "Administrador",
-      "telefono": "555 000111",
-      "correo": "admin@acmeclinic.com",
-      "direccion": "Cl 185 # 26 – 85",
-      "contrasena": "admin123",
-      "roles": [
-        "administrativo"
-      ]
-    }
-  ],
-  "pacientes": [],
-  "consultas": []
+    "usuarios": [
+        {
+            "identificacion": "0000",
+            "nombres": "Admin",
+            "apellidos": "Administrador",
+            "telefono": "555 000111",
+            "correo": "admin@acmeclinic.com",
+            "direccion": "Cl 185 # 26 \u2013 85",
+            "contrasena": "admin123",
+            "roles": [
+                "administrativo",
+                "medico"
+            ]
+        }
+    ],
+    "pacientes": [
+        {
+            "identificacion": "1098817971",
+            "nombres": "Carlos Daniel",
+            "apellidos": "Arauz Sanjuan",
+            "telefono": "31820248770",
+            "correo": "darauzing@gmail.com",
+            "direccion": "calle 42 # 18-16 apto 501",
+            "genero": "masculino",
+            "estado_civil": "soltero"
+        }
+    ],
+    "consultas": [
+        {
+            "fecha": "2026-11-13 23:25:39",
+            "identificacion_paciente": "1098817971",
+            "paciente": "Carlos Daniel Arauz Sanjuan",
+            "identificacion_medico": "0000",
+            "medico": "Admin Administrador",
+            "sintomas": "dolor de cabeza",
+            "diagnostico": "cefalea",
+            "medicamentos": [
+                {
+                    "medicamento": "acetaminofen",
+                    "cantidad": "20 tabletas, 1 cada 6 horas",
+                    "dosis": "4 tabletas diarias",
+                    "tiempo_dias": 5
+                }
+            ]
+        }
+    ]
 }
