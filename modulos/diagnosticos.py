@@ -1,10 +1,11 @@
 import json
 from datetime import datetime
 from pathlib import Path
+from modulos.validaciones import esperar_volver, pedir_dias, pedir_si_no, pedir_texto
 
 
 def diagnosticar_paciente(datos, usuario, ruta):
-    identificacion_paciente = input("Identificación del paciente: ")
+    identificacion_paciente = pedir_texto("Identificación del paciente: ")
 
     paciente_encontrado = False
 
@@ -15,26 +16,19 @@ def diagnosticar_paciente(datos, usuario, ruta):
 
     if paciente_encontrado == False:
         print("Paciente no encontrado. Debe registrarse primero.")
+        esperar_volver("1. Volver al menú principal: ")
         return
 
-    sintomas = input("Síntomas: ")
-    diagnostico = input("Diagnóstico: ")
+    sintomas = pedir_texto("Síntomas: ")
+    diagnostico = pedir_texto("Diagnóstico: ")
 
     medicamentos = []
-    agregar_medicamento = "s"
 
-    while agregar_medicamento == "s":
-        medicamento = input("Medicamento: ")
-        cantidad = input("Cantidad (por ejemplo, 20 tabletas): ")
-        dosis = input("Dosis diaria: ")
-        while True:
-            try:
-                tiempo_dias = int(input("Duración del tratamiento en días: "))
-                if tiempo_dias > 0:
-                    break
-                print("La duración debe ser mayor que cero.")
-            except ValueError:
-                print("Escribe un número entero de días, por ejemplo: 5.")
+    while True:
+        medicamento = pedir_texto("Medicamento: ")
+        cantidad = pedir_texto("Cantidad (por ejemplo, 20 tabletas): ")
+        dosis = pedir_texto("Dosis diaria: ")
+        tiempo_dias = pedir_dias("Duración del tratamiento en días: ")
 
         nuevo_medicamento = {
             "medicamento": medicamento,
@@ -44,7 +38,9 @@ def diagnosticar_paciente(datos, usuario, ruta):
         }
 
         medicamentos.append(nuevo_medicamento)
-        agregar_medicamento = input("¿Agregar otro medicamento? (s/n): ")
+        agregar_medicamento = pedir_si_no("¿Agregar otro medicamento? (si/no): ")
+        if agregar_medicamento == "no":
+            break
 
     fecha_hora = datetime.now()
     fecha_consulta = fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
@@ -75,3 +71,4 @@ def diagnosticar_paciente(datos, usuario, ruta):
 
     print("Consulta registrada.")
     print("Prescripción guardada en:", ruta_prescripcion)
+    esperar_volver("1. Volver al menú principal: ")

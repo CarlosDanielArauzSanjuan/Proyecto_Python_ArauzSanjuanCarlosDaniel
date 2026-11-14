@@ -5,6 +5,7 @@ from modulos.usuarios import gestionar_usuarios
 from modulos.pacientes import gestionar_pacientes
 from modulos.diagnosticos import diagnosticar_paciente
 from modulos.historia import consultar_historia
+from modulos.validaciones import esperar_volver
 
 
 ruta = Path(__file__).parent / "datos" / "clinica.json"
@@ -75,7 +76,7 @@ if acceso_concedido:
             print("║ 0. Gestionar usuarios                ║")
 
         print("╚══════════════════════════════════════╝")
-        opcion = input("Selecciona una opción: ")
+        opcion = input("Selecciona una opción: ").strip()
 
         match opcion:
             case "0":
@@ -83,6 +84,7 @@ if acceso_concedido:
                     gestionar_usuarios(datos, ruta, usuario)
                 else:
                     print("Opción no disponible.")
+                    esperar_volver("1. Volver al menú principal: ")
 
             case "1":
                 gestionar_pacientes(datos, ruta)
@@ -92,6 +94,7 @@ if acceso_concedido:
                     diagnosticar_paciente(datos, usuario, ruta)
                 else:
                     print("Opción no disponible.")
+                    esperar_volver("1. Volver al menú principal: ")
 
             case "3":
                 consultar_historia(datos)
@@ -102,3 +105,4 @@ if acceso_concedido:
 
             case _:
                 print("Opción inválida.")
+                esperar_volver("1. Volver al menú principal: ")

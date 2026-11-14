@@ -1,3 +1,6 @@
+from modulos.validaciones import esperar_volver, pedir_fecha, pedir_texto
+
+
 def mostrar_datos_paciente(paciente):
     print("\n╔══════════════════════════════════════╗")
     print("║             DATOS DEL PACIENTE       ║")
@@ -31,7 +34,7 @@ def mostrar_consulta(consulta):
 
 
 def consultar_historia(datos):
-    identificacion = input("Identificación del paciente: ")
+    identificacion = pedir_texto("Identificación del paciente: ")
     paciente_encontrado = False
 
     for paciente in datos["pacientes"]:
@@ -41,6 +44,7 @@ def consultar_historia(datos):
 
     if paciente_encontrado == False:
         print("Paciente no encontrado.")
+        esperar_volver("1. Volver al menú principal: ")
         return
 
     while True:
@@ -53,7 +57,7 @@ def consultar_historia(datos):
         print("║ 0. Volver al menú principal          ║")
         print("╚══════════════════════════════════════╝")
 
-        opcion = input("Selecciona una opción: ")
+        opcion = input("Selecciona una opción: ").strip()
 
         if opcion == "1":
             mostrar_datos_paciente(paciente)
@@ -66,6 +70,7 @@ def consultar_historia(datos):
 
             if historial_encontrado == False:
                 print("Este paciente todavía no tiene consultas registradas.")
+            esperar_volver("1. Volver al menú de historia clínica: ")
 
         elif opcion == "2":
             fechas_encontradas = False
@@ -77,7 +82,7 @@ def consultar_historia(datos):
                     print("-", consulta["fecha"])
 
             if fechas_encontradas:
-                fecha_buscada = input("Escribe la fecha de la consulta (AAAA-MM-DD): ")
+                fecha_buscada = pedir_fecha("Escribe la fecha de la consulta (AAAA-MM-DD): ")
                 consulta_encontrada = False
 
                 for consulta in datos["consultas"]:
@@ -91,8 +96,10 @@ def consultar_historia(datos):
                     print("No se encontró una consulta con esa fecha.")
             else:
                 print("Este paciente todavía no tiene consultas registradas.")
+            esperar_volver("1. Volver al menú de historia clínica: ")
 
         elif opcion == "0":
             break
         else:
             print("Opción inválida.")
+            esperar_volver("1. Volver al menú de historia clínica: ")

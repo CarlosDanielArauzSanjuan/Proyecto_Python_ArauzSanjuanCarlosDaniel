@@ -1,4 +1,5 @@
 import json
+from modulos.validaciones import esperar_volver, pedir_rol, pedir_texto
 
 
 def registrar_usuario(datos, ruta):
@@ -6,18 +7,14 @@ def registrar_usuario(datos, ruta):
     print("║            AGREGAR USUARIO           ║")
     print("╚══════════════════════════════════════╝")
 
-    identificacion = input("Número de identificación: ")
-    nombres = input("Nombres: ")
-    apellidos = input("Apellidos: ")
-    telefono = input("Número de teléfono: ")
-    correo = input("Correo electrónico corporativo: ")
-    direccion = input("Dirección: ")
-    contrasena = input("Contraseña: ")
-    rol = input("Rol (administrativo/medico/ambos): ")
-
-    while rol != "administrativo" and rol != "medico" and rol != "ambos":
-        print("Rol no válido. Escribe administrativo, medico o ambos.")
-        rol = input("Rol (administrativo/medico/ambos): ")
+    identificacion = pedir_texto("Número de identificación: ")
+    nombres = pedir_texto("Nombres: ")
+    apellidos = pedir_texto("Apellidos: ")
+    telefono = pedir_texto("Número de teléfono: ")
+    correo = pedir_texto("Correo electrónico corporativo: ")
+    direccion = pedir_texto("Dirección: ")
+    contrasena = pedir_texto("Contraseña: ")
+    rol = pedir_rol("Rol (administrativo/medico/ambos): ")
 
     if rol == "ambos":
         roles = ["administrativo", "medico"]
@@ -52,19 +49,19 @@ def registrar_usuario(datos, ruta):
 
 
 def modificar_usuario(datos, ruta):
-    identificacion = input("Identificación del usuario que deseas modificar: ")
+    identificacion = pedir_texto("Identificación del usuario que deseas modificar: ")
 
     for usuario in datos["usuarios"]:
         if usuario["identificacion"] == identificacion:
             print("Deja el campo vacío para conservar el dato actual.")
-            nombres = input("Nombres [" + usuario["nombres"] + "]: ")
-            apellidos = input("Apellidos [" + usuario["apellidos"] + "]: ")
-            telefono = input("Teléfono [" + usuario["telefono"] + "]: ")
-            correo = input("Correo [" + usuario["correo"] + "]: ")
-            direccion = input("Dirección [" + usuario["direccion"] + "]: ")
-            contrasena = input("Contraseña nueva (vacío conserva la actual): ")
+            nombres = input("Nombres [" + usuario["nombres"] + "]: ").strip()
+            apellidos = input("Apellidos [" + usuario["apellidos"] + "]: ").strip()
+            telefono = input("Teléfono [" + usuario["telefono"] + "]: ").strip()
+            correo = input("Correo [" + usuario["correo"] + "]: ").strip()
+            direccion = input("Dirección [" + usuario["direccion"] + "]: ").strip()
+            contrasena = input("Contraseña nueva (vacío conserva la actual): ").strip()
             roles_actuales = " / ".join(usuario["roles"])
-            rol = input("Rol (administrativo/medico/ambos, vacío conserva " + roles_actuales + "): ")
+            rol = pedir_rol("Rol (administrativo/medico/ambos, vacío conserva " + roles_actuales + "): ", permitir_vacio=True)
 
             if correo != "":
                 for otro_usuario in datos["usuarios"]:
@@ -73,10 +70,6 @@ def modificar_usuario(datos, ruta):
                         return
 
             if rol != "":
-                while rol != "administrativo" and rol != "medico" and rol != "ambos":
-                    print("Rol no válido. Escribe administrativo, medico o ambos.")
-                    rol = input("Rol (administrativo/medico/ambos): ")
-
                 if rol == "ambos":
                     roles_nuevos = ["administrativo", "medico"]
                 else:
@@ -116,7 +109,7 @@ def modificar_usuario(datos, ruta):
 
 
 def eliminar_usuario(datos, ruta, usuario_actual):
-    identificacion = input("Identificación del usuario que deseas eliminar: ")
+    identificacion = pedir_texto("Identificación del usuario que deseas eliminar: ")
 
     for usuario in datos["usuarios"]:
         if usuario["identificacion"] == identificacion:
@@ -159,15 +152,19 @@ def gestionar_usuarios(datos, ruta, usuario_actual):
         print("║ 0. Volver al menú principal          ║")
         print("╚══════════════════════════════════════╝")
 
-        opcion = input("Selecciona una opción: ")
+        opcion = input("Selecciona una opción: ").strip()
 
         if opcion == "1":
             registrar_usuario(datos, ruta)
+            esperar_volver("1. Volver al menú de gestión de usuarios: ")
         elif opcion == "2":
             modificar_usuario(datos, ruta)
+            esperar_volver("1. Volver al menú de gestión de usuarios: ")
         elif opcion == "3":
             eliminar_usuario(datos, ruta, usuario_actual)
+            esperar_volver("1. Volver al menú de gestión de usuarios: ")
         elif opcion == "0":
             break
         else:
             print("Opción inválida.")
+            esperar_volver("1. Volver al menú de gestión de usuarios: ")
