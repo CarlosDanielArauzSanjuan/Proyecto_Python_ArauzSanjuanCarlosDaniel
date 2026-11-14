@@ -13,11 +13,16 @@ def registrar_usuario(datos, ruta):
     correo = input("Correo electrónico corporativo: ")
     direccion = input("Dirección: ")
     contrasena = input("Contraseña: ")
-    rol = input("Rol (administrativo/medico): ")
+    rol = input("Rol (administrativo/medico/ambos): ")
 
-    while rol != "administrativo" and rol != "medico":
-        print("Rol no válido. Escribe administrativo o medico.")
-        rol = input("Rol (administrativo/medico): ")
+    while rol != "administrativo" and rol != "medico" and rol != "ambos":
+        print("Rol no válido. Escribe administrativo, medico o ambos.")
+        rol = input("Rol (administrativo/medico/ambos): ")
+
+    if rol == "ambos":
+        roles = ["administrativo", "medico"]
+    else:
+        roles = [rol]
 
     for usuario in datos["usuarios"]:
         if usuario["identificacion"] == identificacion:
@@ -35,7 +40,7 @@ def registrar_usuario(datos, ruta):
         "correo": correo,
         "direccion": direccion,
         "contrasena": contrasena,
-        "rol": rol
+        "roles": roles
     }
 
     datos["usuarios"].append(nuevo_usuario)
@@ -58,7 +63,8 @@ def modificar_usuario(datos, ruta):
             correo = input("Correo [" + usuario["correo"] + "]: ")
             direccion = input("Dirección [" + usuario["direccion"] + "]: ")
             contrasena = input("Contraseña nueva (vacío conserva la actual): ")
-            rol = input("Rol (administrativo/medico, vacío conserva el actual): ")
+            roles_actuales = " / ".join(usuario["roles"])
+            rol = input("Rol (administrativo/medico/ambos, vacío conserva " + roles_actuales + "): ")
 
             if correo != "":
                 for otro_usuario in datos["usuarios"]:
@@ -67,10 +73,25 @@ def modificar_usuario(datos, ruta):
                         return
 
             if rol != "":
-                while rol != "administrativo" and rol != "medico":
-                    print("Rol no válido. Escribe administrativo o medico.")
-                    rol = input("Rol (administrativo/medico): ")
-                usuario["rol"] = rol
+                while rol != "administrativo" and rol != "medico" and rol != "ambos":
+                    print("Rol no válido. Escribe administrativo, medico o ambos.")
+                    rol = input("Rol (administrativo/medico/ambos): ")
+
+                if rol == "ambos":
+                    roles_nuevos = ["administrativo", "medico"]
+                else:
+                    roles_nuevos = [rol]
+
+                if "administrativo" in usuario["roles"] and "administrativo" not in roles_nuevos:
+                    cantidad_administrativos = 0
+                    for otro_usuario in datos["usuarios"]:
+                        if "administrativo" in otro_usuario["roles"]:
+                            cantidad_administrativos += 1
+                    if cantidad_administrativos == 1:
+                        print("No se puede cambiar el rol del último usuario administrativo.")
+                        return
+
+                usuario["roles"] = roles_nuevos
 
             if nombres != "":
                 usuario["nombres"] = nombres
@@ -107,10 +128,10 @@ def eliminar_usuario(datos, ruta, usuario_actual):
                 print("No puedes eliminar el usuario de la sesión actual.")
                 return
 
-            if usuario["rol"] == "administrativo":
+            if "administrativo" in usuario["roles"]:
                 cantidad_administrativos = 0
                 for otro_usuario in datos["usuarios"]:
-                    if otro_usuario["rol"] == "administrativo":
+                    if "administrativo" in otro_usuario["roles"]:
                         cantidad_administrativos += 1
                 if cantidad_administrativos == 1:
                     print("No se puede eliminar el último usuario administrativo.")
