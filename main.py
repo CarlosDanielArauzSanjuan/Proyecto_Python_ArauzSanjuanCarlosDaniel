@@ -46,7 +46,10 @@ if acceso_concedido:
 
     while sesion_activa:
         print("1. Registrar pacientes")
-        print("2. Diagnosticar pacientes")
+        
+        if usuario["rol"] == "medico":
+            print("2. Diagnosticar pacientes")
+            
         print("3. Consultar historia clínica")
         print("4. Cerrar sesión")
 
@@ -66,7 +69,10 @@ if acceso_concedido:
                 registrar_paciente(datos, ruta)
 
             case "2":
-                diagnosticar_paciente(datos, usuario, ruta)
+                if usuario["rol"] == "medico":
+                    diagnosticar_paciente(datos, usuario, ruta)
+                else:
+                    print("Opción no disponible")
 
             case "3":
                 consultar_historia(datos)

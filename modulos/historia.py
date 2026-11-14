@@ -1,3 +1,6 @@
+import json
+
+
 def consultar_historia(datos):
     identificacion = input("Identificación del paciente: ")
 
