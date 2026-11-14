@@ -27,7 +27,14 @@ def diagnosticar_paciente(datos, usuario, ruta):
         medicamento = input("Medicamento: ")
         cantidad = input("Cantidad (por ejemplo, 20 tabletas): ")
         dosis = input("Dosis diaria: ")
-        tiempo_dias = int(input("Duración del tratamiento en días: "))
+        while True:
+            try:
+                tiempo_dias = int(input("Duración del tratamiento en días: "))
+                if tiempo_dias > 0:
+                    break
+                print("La duración debe ser mayor que cero.")
+            except ValueError:
+                print("Escribe un número entero de días, por ejemplo: 5.")
 
         nuevo_medicamento = {
             "medicamento": medicamento,
@@ -58,14 +65,8 @@ def diagnosticar_paciente(datos, usuario, ruta):
     with open(ruta, "w", encoding="utf-8") as archivo:
         json.dump(datos, archivo, indent=4)
 
-    fecha_para_archivo = fecha_hora.strftime("%Y%m%d_%H%M%S")
-    nombre_archivo = (
-        "prescripcion_"
-        + identificacion_paciente
-        + "_"
-        + fecha_para_archivo
-        + ".json"
-    )
+    fecha_para_archivo = fecha_hora.strftime("%Y%m%d_%H%M%S_%f")
+    nombre_archivo = "prescripcion_" + fecha_para_archivo + ".json"
 
     ruta_prescripcion = Path(ruta).parent / nombre_archivo
 
