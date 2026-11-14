@@ -77,12 +77,12 @@ def consultar_historia(datos):
                     print("-", consulta["fecha"])
 
             if fechas_encontradas:
-                fecha_buscada = input("Escribe la fecha exacta de la consulta: ")
+                fecha_buscada = input("Escribe la fecha de la consulta (AAAA-MM-DD): ")
                 consulta_encontrada = False
 
                 for consulta in datos["consultas"]:
                     if (consulta["identificacion_paciente"] == identificacion
-                            and consulta["fecha"] == fecha_buscada):
+                            and consulta["fecha"].split(" ")[0] == fecha_buscada):
                         consulta_encontrada = True
                         mostrar_datos_paciente(paciente)
                         mostrar_consulta(consulta)

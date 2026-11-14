@@ -1,0 +1,17 @@
+{
+    "fecha": "2026-11-13 23:25:39",
+    "identificacion_paciente": "1098817971",
+    "paciente": "Carlos Daniel Arauz Sanjuan",
+    "identificacion_medico": "0000",
+    "medico": "Admin Administrador",
+    "sintomas": "dolor de cabeza",
+    "diagnostico": "cefalea",
+    "medicamentos": [
+        {
+            "medicamento": "acetaminofen",
+            "cantidad": "20 tabletas, 1 cada 6 horas",
+            "dosis": "4 tabletas diarias",
+            "tiempo_dias": 5
+        }
+    ]
+}
